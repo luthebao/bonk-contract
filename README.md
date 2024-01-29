@@ -22,5 +22,6 @@ My name is Beyonder Luu
 
 ### Deploy
 
-1. `yarn build` to compile all the contracs files
-2. `yarn deploy` to deploy into blockchain
+1. Setup your Private keys and Explorer API to verify contracts
+2. `yarn build` to compile all the contracs files
+3. `yarn deploy` to deploy into blockchain
