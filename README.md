@@ -4,7 +4,7 @@ This is a template with deploy helper to create your project on EVM blockchain w
 
 ## Author
 
-My name is Beyonder Luu. I'm just a dream maker
+My name is Beyonder Luu
 
 ## How to use
 
@@ -14,22 +14,13 @@ My name is Beyonder Luu. I'm just a dream maker
 4. Write scripts to deploy/verify your contract
 5. Run your script
 
-## Deploy
+## Deploy Steps
 
-### asset
+### Install
 
-1. Token
-2. AssetV2
+`yarn`
 
-### pool
+### Deploy
 
-1. FeeCollecter
-2. FeeHandler
-3. AssetRouter [CA](https://goerli.etherscan.io/address/0xbEc70F2e023c823442cf2D21b95Ea21ff7575267)
-4. Bridge [CA](https://goerli.etherscan.io/address/0xF4ec7De2e2dE7b1Aa94EB2f883E6aBa4B02AeBb0)
-5. AggregatorRouter [CA](https://goerli.etherscan.io/address/0xfe1d2647be6e9542e96528ebb3b44e5be035c85c)
-
-## setup
-
-1. Init AggregatorRouter
-2.
+1. `yarn build` to compile all the contracs files
+2. `yarn deploy` to deploy into blockchain
