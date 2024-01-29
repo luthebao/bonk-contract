@@ -19,8 +19,11 @@ async function main() {
         return
     }
 
-    const MyToken = await deployer.deployContract("MyToken", [])
-    await deployer.verifyContract(MyToken.address, [])
+    const MyToken = {
+        "address": "your token address"
+    }
+    // const MyToken = await deployer.deployContract("MyToken", [])
+    // await deployer.verifyContract(MyToken.address, [])
 
     const StorageNFT = await deployer.deployContract("Storage", [])
     await deployer.verifyContract(StorageNFT.address, [])
