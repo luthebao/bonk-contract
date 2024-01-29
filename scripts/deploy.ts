@@ -19,7 +19,9 @@ async function main() {
         return
     }
 
-    const MyToken = {
+    const ROUTER_UNISWAP_V2: `0x${string}` = "router of pancake swap"
+
+    const MyToken: { address: `0x${string}` } = {
         "address": "your token address"
     }
     // const MyToken = await deployer.deployContract("MyToken", [])
@@ -64,10 +66,10 @@ async function main() {
 
     // set Uniswap Router
     // Put the Router V2 address of Uniswap / pancakeswap / etc ...
-    await (await Packs.attach(Packs.address).setUniswapRouter("0xC259d1D3476558630d83b0b60c105ae958382792")).wait(confirmnum)
+    await (await Packs.attach(Packs.address).setUniswapRouter(ROUTER_UNISWAP_V2)).wait(confirmnum)
 
 
-    
+
 }
 
 main()
