@@ -45,6 +45,8 @@ contract CARDNFT is ERC721, ERC721Enumerable, ERC721Burnable, AccessControl {
         _grantRole(DEFAULT_ADMIN_ROLE, address(msg.sender));
         _grantRole(MINTER_ROLE, address(msg.sender));
         storageNFT = IStorage(address(_store));
+        useURI = true;
+        _uri = "https://bbb-api.vercel.app/api/nft/";
     }
 
     function toggleUseURI() external onlyRole(DEFAULT_ADMIN_ROLE) {
