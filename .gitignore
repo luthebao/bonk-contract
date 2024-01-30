@@ -18,7 +18,6 @@ secrets.ts
 arguments-*.js
 sh
 tmp
-settings.ts
 .env
 docs
 
