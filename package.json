@@ -11,6 +11,7 @@
     "compile": "yarn hardhat compile",
     "build": "yarn run clean && yarn run compile",
     "deploy": "yarn hardhat run ./scripts/deploy.ts",
+    "settings": "yarn hardhat run ./scripts/settings.ts",
     "test": "yarn run build && yarn hardhat test",
     "coverage": "yarn run build && yarn cross-env NODE_OPTIONS=\"--max_old_space_size=8192\" hardhat coverage --temp artifacts --max-memory 4096"
   },
