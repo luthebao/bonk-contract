@@ -406,24 +406,24 @@ contract Packs is AccessControl {
         for (uint256 y = 0; y < _ginfo.length; y += 1) {
             GiftInfo memory _gift = _ginfo[y];
             if (_gift.typeelm == 1) {
-                uint256[] memory rare = new uint256[](
-                    _gift.raremax - _gift.raremin + 1
-                );
-                for (
-                    uint256 z1 = 0;
-                    z1 < _gift.raremax - _gift.raremin + 1;
-                    z1 += 1
-                ) {
-                    rare[z1] = z1 + _gift.raremin;
-                }
-                uint256[] memory _rares = createArray(rare);
+                // uint256[] memory rare = new uint256[](
+                //     _gift.raremax - _gift.raremin + 1
+                // );
+                // for (
+                //     uint256 z1 = 0;
+                //     z1 < _gift.raremax - _gift.raremin + 1;
+                //     z1 += 1
+                // ) {
+                //     rare[z1] = z1 + _gift.raremin;
+                // }
+                // uint256[] memory _rares = createArray(rare);
                 for (uint256 z = 0; z < _gift.count; z += 1) {
                     uint256 _tokenid = nftcard.safeMint(msg.sender);
                     uint256 _classid = random(1, 4);
-                    uint256 _rare = randomRare(_rares);
-                    // uint256 _rare = _gift.raremax > _gift.raremin
-                    //     ? random(_gift.raremin, _gift.raremax)
-                    //     : _gift.raremax;
+                    // uint256 _rare = randomRare(_rares);
+                    uint256 _rare = _gift.raremax > _gift.raremin
+                        ? random(_gift.raremin, _gift.raremax)
+                        : _gift.raremax;
                     uint256 _imgid = 1;
                     if (_rare == 1) {
                         _imgid = random(1, 165);
