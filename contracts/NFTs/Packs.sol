@@ -350,6 +350,24 @@ contract Packs is AccessControl {
         return PackInfos[packid];
     }
 
+    function setGiftInfo(
+        uint256 packid,
+        GiftInfo[] calldata _giftinfo
+    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        for (uint256 index = 0; index < PackInfos[packid].length; index++) {
+            delete PackInfos[packid][index];
+        }
+        for (uint256 index = 0; index < _giftinfo.length; index++) {
+            PackInfos[packid].push(_giftinfo[index]);
+        }
+    }
+
+    function setDiscountToken(
+        uint256 discount
+    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        discount_token = discount;
+    }
+
     function setStoreNFT(address _store) public onlyRole(DEFAULT_ADMIN_ROLE) {
         storeNFT = IStorage(_store);
     }
@@ -420,22 +438,22 @@ contract Packs is AccessControl {
                 }
             } else {
                 uint256 _rarity = random(_gift.raremin, _gift.raremax);
-                if (_rarity == 1) {
-                    for (uint256 z = 0; z < _gift.count; z += 1) {
-                        uint256 _item_temp_id = random(1, 4);
-                        itemConsumable.mint(msg.sender, _item_temp_id, 1, "");
-                    }
-                } else if (_rarity == 2) {
+                if (_rarity == 2) {
                     for (uint256 z = 0; z < _gift.count; z += 1) {
                         uint256 _kind = randomRare(_kind2);
                         uint256 _tokenid = itemPermanent.safeMint(msg.sender);
                         storeNFT.addPermanentInfo(_tokenid, _kind);
                     }
                 } else if (_rarity == 3) {
-                    for (uint256 z = 0; z < _gift.count; y += 1) {
+                    for (uint256 z = 0; z < _gift.count; z += 1) {
                         uint256 _kind = randomRare(_kind3);
                         uint256 _tokenid = itemPermanent.safeMint(msg.sender);
                         storeNFT.addPermanentInfo(_tokenid, _kind);
+                    }
+                } else {
+                    for (uint256 z = 0; z < _gift.count; z += 1) {
+                        uint256 _item_temp_id = random(1, 4);
+                        itemConsumable.mint(msg.sender, _item_temp_id, 1, "");
                     }
                 }
             }
@@ -481,7 +499,7 @@ contract Packs is AccessControl {
 
     function createArray(
         uint256[] memory _nums
-    ) public pure returns (uint256[] memory) {
+    ) internal pure returns (uint256[] memory) {
         uint256 _length;
         for (uint256 x = 0; x < _nums.length; x += 1) {
             _length += 40 / _nums[x] - _nums[x];
