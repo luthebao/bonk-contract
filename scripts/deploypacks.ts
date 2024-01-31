@@ -25,10 +25,10 @@ async function main() {
         "address": "0xd31be249db60b30d047aae51ccc18d0561b75465"
     }
     const ADDRESSES = {
-        "StorageNFT": "0xe0679bd58a12b33B6283575BA5c222C61fb6Ef47",
-        "CARDNFT": "0x5346b27eB6B68fd850801da453E9Ba98b81f61a9",
-        "PermanentNFT": "0xF4b855C3BF1eC9AE9a348eF5E05ae77634A6AEF8",
-        "ConsumableNFT": "0xd8bF6CDDa376933fF006748273d9589e8F045409",
+        "StorageNFT": "0xEAF1c3f5133b616d821f3e3Ae94567D547441d42",
+        "CARDNFT": "0xc9Df898a687504A12D12054feE1F180157c00376",
+        "PermanentNFT": "0x17f5E8797Cb89A02A488B5E9537916F903010C8c",
+        "ConsumableNFT": "0x091D3335Ab032Ba1b1C237c2546757881AA1DC9f",
         "Packs": "",
     }
 
@@ -70,11 +70,6 @@ async function main() {
     // Put the Router V2 address of Uniswap / pancakeswap / etc ...
     await (await Packs.attach(Packs.address).setUniswapRouter(ROUTER_UNISWAP_V2)).wait(confirmnum)
 
-
-    for (let index = 1; index < 5; index++) {
-        console.info("TEST BUY", index)
-        await (await Packs.attach(Packs.address).buyPackTest(index)).wait(confirmnum)
-    }
 }
 
 main()
