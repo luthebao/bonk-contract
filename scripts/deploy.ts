@@ -19,10 +19,10 @@ async function main() {
         return
     }
 
-    const ROUTER_UNISWAP_V2: `0x${string}` = "router of pancake swap"
+    const ROUTER_UNISWAP_V2: `0x${string}` = "0xc259d1d3476558630d83b0b60c105ae958382792"
 
     const MyToken: { address: `0x${string}` } = {
-        "address": "your token address"
+        "address": "0xd31be249db60b30d047aae51ccc18d0561b75465"
     }
     // const MyToken = await deployer.deployContract("MyToken", [])
     // await deployer.verifyContract(MyToken.address, [])
@@ -54,16 +54,16 @@ async function main() {
     await (await CARDNFT.attach(CARDNFT.address).grantRole("0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6", Packs.address)).wait(confirmnum)
     await (await PermanentNFT.attach(PermanentNFT.address).grantRole("0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6", Packs.address)).wait(confirmnum)
     await (await ConsumableNFT.attach(ConsumableNFT.address).grantRole("0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6", Packs.address)).wait(confirmnum)
-    
+
     // 0x71f3d55856e4058ed06ee057d79ada615f65cdf5f9ee88181b914225088f834f mod role
     await (await StorageNFT.attach(StorageNFT.address).grantRole("0x71f3d55856e4058ed06ee057d79ada615f65cdf5f9ee88181b914225088f834f", Packs.address)).wait(confirmnum)
 
     // set Price Info 
     // Params: Id Pack, ETH Amount, Token Address
-    await (await Packs.attach(Packs.address).setPriceInfo(1, "150000000000000000", MyToken.address)).wait(confirmnum)
-    await (await Packs.attach(Packs.address).setPriceInfo(2, "250000000000000000", MyToken.address)).wait(confirmnum)
-    await (await Packs.attach(Packs.address).setPriceInfo(3, "500000000000000000", MyToken.address)).wait(confirmnum)
-    await (await Packs.attach(Packs.address).setPriceInfo(4, "750000000000000000", MyToken.address)).wait(confirmnum)
+    await (await Packs.attach(Packs.address).setPriceInfo(1, "15000000000000000", MyToken.address)).wait(confirmnum)
+    await (await Packs.attach(Packs.address).setPriceInfo(2, "25000000000000000", MyToken.address)).wait(confirmnum)
+    await (await Packs.attach(Packs.address).setPriceInfo(3, "50000000000000000", MyToken.address)).wait(confirmnum)
+    await (await Packs.attach(Packs.address).setPriceInfo(4, "75000000000000000", MyToken.address)).wait(confirmnum)
 
     // set Uniswap Router
     // Put the Router V2 address of Uniswap / pancakeswap / etc ...

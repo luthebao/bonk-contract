@@ -238,6 +238,8 @@ contract Packs is AccessControl {
     uint256[] private _kind3 = [2, 4, 6, 8];
     uint256 private nonce = 0;
 
+    uint256 public discount_token;
+
     struct GiftInfo {
         uint256 typeelm; // Type ELM:  1 = NFTs Cards | 2 = Items (Permanent / Consumable)
         uint256 count;
@@ -259,6 +261,7 @@ contract Packs is AccessControl {
         address _itemC,
         address _store
     ) {
+        discount_token = 10;
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         nftcard = INft(_nftcard);
         itemPermanent = INft(_itemP);
@@ -306,7 +309,7 @@ contract Packs is AccessControl {
                 path
             );
             eth_amount = amounts[0];
-            token_amount = amounts[1];
+            token_amount = (amounts[1] * (100 - discount_token)) / 100;
         } else {
             eth_amount = _price.eth_amount;
             token_amount = 0;
@@ -373,7 +376,7 @@ contract Packs is AccessControl {
                     IERC20(address(_price.token)).transferFrom(
                         msg.sender,
                         address(this),
-                        amounts[1] // need to modify this
+                        (amounts[1] * (100 - discount_token)) / 100 // discount token
                     )
                 ),
                 "Invalid token amount"
