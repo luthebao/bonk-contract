@@ -4,7 +4,7 @@ import hre, { ethers } from "hardhat";
 async function main() {
     const accounts = await hre.ethers.getSigners();
     const account_num = 0
-    const confirmnum = 2
+    const confirmnum = 1
 
     const account = accounts[account_num];
     const network = hre.network.name
@@ -19,17 +19,17 @@ async function main() {
         return
     }
 
-    const ROUTER_UNISWAP_V2: `0x${string}` = "router of pancake swap"
+    const ROUTER_UNISWAP_V2: `0x${string}` = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D"
 
     const MyToken: { address: `0x${string}` } = {
-        "address": "your token address"
+        "address": "0x873cFbDF491dd206a41C3233c0D5602917ED2E60"
     }
     const ADDRESSES = {
-        "StorageNFT": "",
-        "CARDNFT": "",
-        "PermanentNFT": "",
-        "ConsumableNFT": "",
-        "Packs": "",
+        "StorageNFT": "0x01322c85f794dd826982A100c71e87d4b8DaB7c0",
+        "CARDNFT": "0xdf7d419411df9b686f478FD12fCCfaA9a7D1F9BE",
+        "PermanentNFT": "0x15a70e52f8CF6057ec0A57cD16317Cb401F08a56",
+        "ConsumableNFT": "0x7b9FccC0AFca25Cf7Ff5199B9FDa8FC812Ee2699",
+        "Packs": "0xEa06E1b3ED32dCB5CF69F1FD9D3f52dD40F5F58C",
     }
 
     const StorageNFT = await ethers.getContractFactory("Storage")
@@ -51,10 +51,10 @@ async function main() {
 
     // set Price Info 
     // Params: Id Pack, ETH Amount, Token Address
-    await (await Packs.attach(ADDRESSES.Packs).setPriceInfo(1, "150000000000000000", MyToken.address)).wait(confirmnum)
-    await (await Packs.attach(ADDRESSES.Packs).setPriceInfo(2, "250000000000000000", MyToken.address)).wait(confirmnum)
-    await (await Packs.attach(ADDRESSES.Packs).setPriceInfo(3, "500000000000000000", MyToken.address)).wait(confirmnum)
-    await (await Packs.attach(ADDRESSES.Packs).setPriceInfo(4, "750000000000000000", MyToken.address)).wait(confirmnum)
+    await (await Packs.attach(ADDRESSES.Packs).setPriceInfo(1, "1500000000000000", MyToken.address)).wait(confirmnum)
+    await (await Packs.attach(ADDRESSES.Packs).setPriceInfo(2, "2500000000000000", MyToken.address)).wait(confirmnum)
+    await (await Packs.attach(ADDRESSES.Packs).setPriceInfo(3, "5000000000000000", MyToken.address)).wait(confirmnum)
+    await (await Packs.attach(ADDRESSES.Packs).setPriceInfo(4, "7500000000000000", MyToken.address)).wait(confirmnum)
 
     // set Uniswap Router
     // Put the Router V2 address of Uniswap / pancakeswap / etc ...
