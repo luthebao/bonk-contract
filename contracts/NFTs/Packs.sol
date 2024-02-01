@@ -406,7 +406,9 @@ contract Packs is AccessControl, Reentrancy {
         }
     }
 
-    function setRareList(uint256[] memory _rares) external onlyRole(DEFAULT_ADMIN_ROLE) {
+    function setRareList(
+        uint256[] memory _rares
+    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
         _rare_list = _rares;
     }
 
@@ -461,11 +463,7 @@ contract Packs is AccessControl, Reentrancy {
                     uint256 _classid = random(1, 4);
                     uint256 _rare = randomRare(_rare_list);
                     if (_rare >= _gift.raremin && _rare <= _gift.raremax) {
-                        if (_rare == 0) {
-                            _rare = 1;
-                        } else if (_rare > 4) {
-                            _rare = 1;
-                        }
+                        require(address(msg.sender) != address(0));
                     } else {
                         _rare = _gift.raremin;
                     }
@@ -480,6 +478,7 @@ contract Packs is AccessControl, Reentrancy {
                         _imgid = random(1, 5);
                     }
                     storeNFT.addCardInfo(_tokenid, _imgid, _classid, _rare);
+                    // storeNFT.addCardInfo(_tokenid, 2, 3, 3);
                 }
             } else {
                 uint256 _rarity = random(_gift.raremin, _gift.raremax);
@@ -506,35 +505,33 @@ contract Packs is AccessControl, Reentrancy {
         }
     }
 
-    function random(uint256 _from, uint256 _to) internal returns (uint256) {
-        uint256 _length = _to - _from + 1;
-        nonce = nonce + 1;
-        uint randomness = uint256(
-            keccak256(
-                abi.encodePacked(block.timestamp, _length, nonce, block.number)
-            )
-        );
-        return (randomness % (_to - _from + 1)) + _from;
+    function random(uint256 _min, uint256 _max) internal returns (uint256) {
+        nonce++;
+        return
+            uint256(
+                uint(
+                    keccak256(
+                        abi.encodePacked(block.timestamp, msg.sender, nonce)
+                    )
+                ) % (_max - _min + 1)
+            ) + _min;
     }
 
     function randomRare(uint256[] memory _myArray) internal returns (uint256) {
         if (_myArray.length == 0) {
             return 1;
         }
-        nonce++;
         uint a = _myArray.length;
         uint b = _myArray.length;
         for (uint i = 0; i < b; i++) {
-            uint randNumber = (uint(
-                keccak256(
-                    abi.encodePacked(
-                        block.timestamp,
-                        _myArray[i],
-                        nonce,
-                        block.number
+            nonce++;
+            uint256 randNumber = uint256(
+                uint(
+                    keccak256(
+                        abi.encodePacked(block.timestamp, msg.sender, nonce)
                     )
-                )
-            ) % a) + 1;
+                ) % a
+            ) + 1;
             uint256 interim = _myArray[randNumber - 1];
             _myArray[randNumber - 1] = _myArray[a - 1];
             _myArray[a - 1] = interim;
@@ -543,35 +540,5 @@ contract Packs is AccessControl, Reentrancy {
         uint256[] memory result;
         result = _myArray;
         return result[0];
-    }
-
-    function createArray(
-        uint256[] memory _nums
-    ) internal pure returns (uint256[] memory) {
-        uint256 _length;
-        for (uint256 x = 0; x < _nums.length; x += 1) {
-            _length += 40 / _nums[x] - _nums[x];
-        }
-        uint256[] memory arr = new uint256[](_length);
-        for (uint256 x = 0; x < _nums.length; x += 1) {
-            if (x == 0) {
-                for (uint i = 0; i < (40 / _nums[x]) - _nums[x]; i++) {
-                    arr[i] = _nums[x];
-                }
-            } else {
-                for (
-                    uint i = (40 / _nums[x - 1]) - _nums[x - 1];
-                    i <
-                    (40 / _nums[x - 1]) -
-                        _nums[x - 1] +
-                        (40 / _nums[x]) -
-                        _nums[x];
-                    i++
-                ) {
-                    arr[i] = _nums[x];
-                }
-            }
-        }
-        return arr;
     }
 }

@@ -19,10 +19,10 @@ async function main() {
         return
     }
 
-    const ROUTER_UNISWAP_V2: `0x${string}` = "0x10ED43C718714eb63d5aA57B78B54704E256024E"
+    const ROUTER_UNISWAP_V2: `0x${string}` = "0xc259d1d3476558630d83b0b60c105ae958382792"
 
     const MyToken: { address: `0x${string}` } = {
-        "address": "0xBb2826Ab03B6321E170F0558804F2B6488C98775"
+        "address": "0xd31be249db60b30d047aae51ccc18d0561b75465"
     }
     // const MyToken = await deployer.deployContract("MyToken", [])
     // await deployer.verifyContract(MyToken.address, [])
@@ -49,6 +49,15 @@ async function main() {
     console.log("// PermanentNFT:", PermanentNFT.address)
     console.log("// ConsumableNFT:", ConsumableNFT.address)
     console.log("// Packs:", Packs.address)
+
+    console.log({
+        Token: MyToken.address,
+        StorageNFT: StorageNFT.address,
+        CARDNFT: CARDNFT.address,
+        PermanentNFT: PermanentNFT.address,
+        ConsumableNFT: ConsumableNFT.address,
+        Packs: Packs.address,
+    })
 
     // 0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6 minter role
     console.log(`Grant Role Minter`)
@@ -83,12 +92,3 @@ main()
         console.error(error);
         process.exit(1);
     });
-
-
-// bscMainnet
-// MyToken: 0xBb2826Ab03B6321E170F0558804F2B6488C98775
-// StorageNFT: 0x61a22bb4883bfAbEE2Fda5fD57Acc2B0CA2Be05a
-// CARDNFT: 0xa599558Ef13BFEE0171b0100258384d8476FbFBA
-// PermanentNFT: 0xC49ec281f63c0136Fdd6542dbbebB2A14aDfA7F4
-// ConsumableNFT: 0x15605549f87b32ae258Cb53B97F4af73e47E8300
-// Packs: 0x86a6196a3c5250F4A314B88C729273124Ef0611F

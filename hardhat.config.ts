@@ -4,7 +4,7 @@ import "solidity-coverage";
 import "@nomicfoundation/hardhat-verify";
 
 export default {
-    defaultNetwork: "bscMainnet",
+    defaultNetwork: "baseGoerli",
     networks: {
         goerli: {
             url: "https://rpc.ankr.com/eth_goerli",
