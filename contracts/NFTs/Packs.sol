@@ -260,9 +260,6 @@ contract Packs is AccessControl, Reentrancy {
         1,
         1,
         1,
-        1,
-        1,
-        1,
         2,
         2,
         2,
@@ -277,6 +274,9 @@ contract Packs is AccessControl, Reentrancy {
         3,
         3,
         3,
+        3,
+        3,
+        4,
         4
     ];
 
@@ -404,6 +404,10 @@ contract Packs is AccessControl, Reentrancy {
         for (uint256 index = 0; index < _giftinfo.length; index++) {
             PackInfos[packid].push(_giftinfo[index]);
         }
+    }
+
+    function setRareList(uint256[] memory _rares) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        _rare_list = _rares;
     }
 
     function setDiscountToken(

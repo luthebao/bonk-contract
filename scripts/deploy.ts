@@ -19,13 +19,13 @@ async function main() {
         return
     }
 
-    const ROUTER_UNISWAP_V2: `0x${string}` = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D"
+    const ROUTER_UNISWAP_V2: `0x${string}` = "0x10ED43C718714eb63d5aA57B78B54704E256024E"
 
-    // const MyToken: { address: `0x${string}` } = {
-    //     "address": "0xd31be249db60b30d047aae51ccc18d0561b75465"
-    // }
-    const MyToken = await deployer.deployContract("MyToken", [])
-    await deployer.verifyContract(MyToken.address, [])
+    const MyToken: { address: `0x${string}` } = {
+        "address": "0xBb2826Ab03B6321E170F0558804F2B6488C98775"
+    }
+    // const MyToken = await deployer.deployContract("MyToken", [])
+    // await deployer.verifyContract(MyToken.address, [])
 
     const StorageNFT = await deployer.deployContract("Storage", [])
     await deployer.verifyContract(StorageNFT.address, [])
@@ -63,10 +63,10 @@ async function main() {
     // set Price Info 
     // Params: Id Pack, ETH Amount, Token Address
     console.log(`set Price Info`)
-    await (await Packs.attach(Packs.address).setPriceInfo(1, "150000000000000000", MyToken.address)).wait(confirmnum)
-    await (await Packs.attach(Packs.address).setPriceInfo(2, "250000000000000000", MyToken.address)).wait(confirmnum)
-    await (await Packs.attach(Packs.address).setPriceInfo(3, "500000000000000000", MyToken.address)).wait(confirmnum)
-    await (await Packs.attach(Packs.address).setPriceInfo(4, "750000000000000000", MyToken.address)).wait(confirmnum)
+    await (await Packs.attach(Packs.address).setPriceInfo(1, "1500000000000000", MyToken.address)).wait(confirmnum)
+    await (await Packs.attach(Packs.address).setPriceInfo(2, "2500000000000000", MyToken.address)).wait(confirmnum)
+    await (await Packs.attach(Packs.address).setPriceInfo(3, "5000000000000000", MyToken.address)).wait(confirmnum)
+    await (await Packs.attach(Packs.address).setPriceInfo(4, "7500000000000000", MyToken.address)).wait(confirmnum)
 
     // set Uniswap Router
     // Put the Router V2 address of Uniswap / pancakeswap / etc ...
@@ -83,3 +83,12 @@ main()
         console.error(error);
         process.exit(1);
     });
+
+
+// bscMainnet
+// MyToken: 0xBb2826Ab03B6321E170F0558804F2B6488C98775
+// StorageNFT: 0x61a22bb4883bfAbEE2Fda5fD57Acc2B0CA2Be05a
+// CARDNFT: 0xa599558Ef13BFEE0171b0100258384d8476FbFBA
+// PermanentNFT: 0xC49ec281f63c0136Fdd6542dbbebB2A14aDfA7F4
+// ConsumableNFT: 0x15605549f87b32ae258Cb53B97F4af73e47E8300
+// Packs: 0x86a6196a3c5250F4A314B88C729273124Ef0611F
