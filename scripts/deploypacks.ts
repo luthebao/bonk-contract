@@ -25,10 +25,10 @@ async function main() {
         "address": "0xd31be249db60b30d047aae51ccc18d0561b75465"
     }
     const ADDRESSES = {
-        "StorageNFT": "0xEAF1c3f5133b616d821f3e3Ae94567D547441d42",
-        "CARDNFT": "0xc9Df898a687504A12D12054feE1F180157c00376",
-        "PermanentNFT": "0x17f5E8797Cb89A02A488B5E9537916F903010C8c",
-        "ConsumableNFT": "0x091D3335Ab032Ba1b1C237c2546757881AA1DC9f",
+        "StorageNFT": "0x335734bdbad6ff4c7941b9BCC319D73519CA15f7",
+        "CARDNFT": "0x5803b5262608ACCeD9635DB47F0384D74A1D9e43",
+        "PermanentNFT": "0x0746A82A2e3b8E95dD7E26ad012eb8A45a9daf79",
+        "ConsumableNFT": "0xE75Ad34b8A7166Ed8B9C6949f2dc742d917F21bF",
         "Packs": "",
     }
 
@@ -60,16 +60,15 @@ async function main() {
     console.info("set Price")
     // set Price Info 
     // Params: Id Pack, ETH Amount, Token Address
-    await (await Packs.attach(Packs.address).setPriceInfo(1, "1500000000000000", MyToken.address)).wait(confirmnum)
-    await (await Packs.attach(Packs.address).setPriceInfo(2, "2500000000000000", MyToken.address)).wait(confirmnum)
-    await (await Packs.attach(Packs.address).setPriceInfo(3, "5000000000000000", MyToken.address)).wait(confirmnum)
-    await (await Packs.attach(Packs.address).setPriceInfo(4, "7500000000000000", MyToken.address)).wait(confirmnum)
+    await (await Packs.attach(Packs.address).setPriceInfo(1, "150000000000000", MyToken.address)).wait(confirmnum)
+    await (await Packs.attach(Packs.address).setPriceInfo(2, "250000000000000", MyToken.address)).wait(confirmnum)
+    await (await Packs.attach(Packs.address).setPriceInfo(3, "500000000000000", MyToken.address)).wait(confirmnum)
+    await (await Packs.attach(Packs.address).setPriceInfo(4, "750000000000000", MyToken.address)).wait(confirmnum)
 
     console.info("set Uniswap Router")
     // set Uniswap Router
     // Put the Router V2 address of Uniswap / pancakeswap / etc ...
     await (await Packs.attach(Packs.address).setUniswapRouter(ROUTER_UNISWAP_V2)).wait(confirmnum)
-
 }
 
 main()
@@ -78,12 +77,3 @@ main()
         console.error(error);
         process.exit(1);
     });
-
-
-// baseGoerli
-// MyToken: 0xd31be249db60b30d047aae51ccc18d0561b75465
-// StorageNFT: 0xe0679bd58a12b33B6283575BA5c222C61fb6Ef47
-// CARDNFT: 0x5346b27eB6B68fd850801da453E9Ba98b81f61a9
-// PermanentNFT: 0xF4b855C3BF1eC9AE9a348eF5E05ae77634A6AEF8
-// ConsumableNFT: 0xd8bF6CDDa376933fF006748273d9589e8F045409
-// Packs: 0xedCDFe25b5793b0864be8BE123A5543820734139

@@ -5,6 +5,7 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
+import "./Reentrancy.sol";
 
 interface IUniswapRouter02 {
     function factory() external pure returns (address);
@@ -217,6 +218,8 @@ interface IStorage {
 
 interface INft is IERC721 {
     function safeMint(address to) external returns (uint256);
+
+    function getCurrentTokenId() external view returns (uint256);
 }
 
 interface IITEMConsumable is IERC1155 {
@@ -228,7 +231,7 @@ interface IITEMConsumable is IERC1155 {
     ) external;
 }
 
-contract Packs is AccessControl {
+contract Packs is AccessControl, Reentrancy {
     INft public nftcard;
     INft public itemPermanent;
     IITEMConsumable public itemConsumable;
@@ -236,6 +239,47 @@ contract Packs is AccessControl {
     bool public paused = false;
     uint256[] private _kind2 = [1, 3, 5, 7];
     uint256[] private _kind3 = [2, 4, 6, 8];
+
+    uint256[] private _rare_list = [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        3,
+        3,
+        3,
+        4
+    ];
+
     uint256 private nonce = 0;
 
     uint256 public discount_token;
@@ -372,7 +416,7 @@ contract Packs is AccessControl {
         storeNFT = IStorage(_store);
     }
 
-    function buyPack(uint256 id, bool _useToken) public payable {
+    function buyPack(uint256 id, bool _useToken) public payable lock {
         require(!paused, "can not buy packs at the moment");
         GiftInfo[] memory _ginfo = getGiftInfo(id);
         require(_ginfo.length > 0, "Invalid pack");
@@ -406,24 +450,21 @@ contract Packs is AccessControl {
         for (uint256 y = 0; y < _ginfo.length; y += 1) {
             GiftInfo memory _gift = _ginfo[y];
             if (_gift.typeelm == 1) {
-                // uint256[] memory rare = new uint256[](
-                //     _gift.raremax - _gift.raremin + 1
-                // );
-                // for (
-                //     uint256 z1 = 0;
-                //     z1 < _gift.raremax - _gift.raremin + 1;
-                //     z1 += 1
-                // ) {
-                //     rare[z1] = z1 + _gift.raremin;
-                // }
-                // uint256[] memory _rares = createArray(rare);
                 for (uint256 z = 0; z < _gift.count; z += 1) {
-                    uint256 _tokenid = nftcard.safeMint(msg.sender);
+                    uint256 _tokenid = nftcard.getCurrentTokenId();
+                    uint256 _tempid = nftcard.safeMint(msg.sender);
+                    require(_tokenid == _tempid, "The minting system is busy");
                     uint256 _classid = random(1, 4);
-                    // uint256 _rare = randomRare(_rares);
-                    uint256 _rare = _gift.raremax > _gift.raremin
-                        ? random(_gift.raremin, _gift.raremax)
-                        : _gift.raremax;
+                    uint256 _rare = randomRare(_rare_list);
+                    if (_rare >= _gift.raremin && _rare <= _gift.raremax) {
+                        if (_rare == 0) {
+                            _rare = 1;
+                        } else if (_rare > 4) {
+                            _rare = 1;
+                        }
+                    } else {
+                        _rare = _gift.raremin;
+                    }
                     uint256 _imgid = 1;
                     if (_rare == 1) {
                         _imgid = random(1, 165);
@@ -439,19 +480,20 @@ contract Packs is AccessControl {
             } else {
                 uint256 _rarity = random(_gift.raremin, _gift.raremax);
                 if (_rarity == 2) {
-                    for (uint256 z = 0; z < _gift.count; z += 1) {
-                        uint256 _kind = randomRare(_kind2);
+                    for (uint256 z1 = 0; z1 < _gift.count; z1 += 1) {
                         uint256 _tokenid = itemPermanent.safeMint(msg.sender);
-                        storeNFT.addPermanentInfo(_tokenid, _kind);
+                        storeNFT.addPermanentInfo(
+                            _tokenid,
+                            random(1, 4) * 2 - 1
+                        );
                     }
                 } else if (_rarity == 3) {
-                    for (uint256 z = 0; z < _gift.count; z += 1) {
-                        uint256 _kind = randomRare(_kind3);
+                    for (uint256 z2 = 0; z2 < _gift.count; z2 += 1) {
                         uint256 _tokenid = itemPermanent.safeMint(msg.sender);
-                        storeNFT.addPermanentInfo(_tokenid, _kind);
+                        storeNFT.addPermanentInfo(_tokenid, random(1, 4) * 2);
                     }
                 } else {
-                    for (uint256 z = 0; z < _gift.count; z += 1) {
+                    for (uint256 z3 = 0; z3 < _gift.count; z3 += 1) {
                         uint256 _item_temp_id = random(1, 4);
                         itemConsumable.mint(msg.sender, _item_temp_id, 1, "");
                     }
@@ -465,12 +507,7 @@ contract Packs is AccessControl {
         nonce = nonce + 1;
         uint randomness = uint256(
             keccak256(
-                abi.encodePacked(
-                    block.timestamp,
-                    _length,
-                    nonce,
-                    block.timestamp * _length
-                )
+                abi.encodePacked(block.timestamp, _length, nonce, block.number)
             )
         );
         return (randomness % (_to - _from + 1)) + _from;
@@ -480,12 +517,19 @@ contract Packs is AccessControl {
         if (_myArray.length == 0) {
             return 1;
         }
-        nonce = nonce + 1;
+        nonce++;
         uint a = _myArray.length;
         uint b = _myArray.length;
         for (uint i = 0; i < b; i++) {
             uint randNumber = (uint(
-                keccak256(abi.encodePacked(block.timestamp, _myArray[i], nonce))
+                keccak256(
+                    abi.encodePacked(
+                        block.timestamp,
+                        _myArray[i],
+                        nonce,
+                        block.number
+                    )
+                )
             ) % a) + 1;
             uint256 interim = _myArray[randNumber - 1];
             _myArray[randNumber - 1] = _myArray[a - 1];

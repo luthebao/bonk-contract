@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
+import "./Reentrancy.sol";
 
 interface IStorage {
     struct PermanentItem {
@@ -22,7 +23,8 @@ contract PermanentNFT is
     ERC721,
     ERC721Enumerable,
     ERC721Burnable,
-    AccessControl
+    AccessControl,
+    Reentrancy
 {
     using Strings for uint256;
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
@@ -66,10 +68,14 @@ contract PermanentNFT is
 
     function safeMint(
         address to
-    ) public onlyRole(MINTER_ROLE) returns (uint256 _tokenid) {
+    ) public lock onlyRole(MINTER_ROLE) returns (uint256 _tokenid) {
         uint256 tokenId = _nextTokenId++;
         _safeMint(to, tokenId);
         _tokenid = tokenId;
+    }
+
+    function getCurrentTokenId() public view returns (uint256) {
+        return _nextTokenId;
     }
 
     function getAllTokenOfOwner(

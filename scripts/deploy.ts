@@ -60,10 +60,10 @@ async function main() {
 
     // set Price Info 
     // Params: Id Pack, ETH Amount, Token Address
-    await (await Packs.attach(Packs.address).setPriceInfo(1, "150000000000000000", MyToken.address)).wait(confirmnum)
-    await (await Packs.attach(Packs.address).setPriceInfo(2, "250000000000000000", MyToken.address)).wait(confirmnum)
-    await (await Packs.attach(Packs.address).setPriceInfo(3, "500000000000000000", MyToken.address)).wait(confirmnum)
-    await (await Packs.attach(Packs.address).setPriceInfo(4, "750000000000000000", MyToken.address)).wait(confirmnum)
+    await (await Packs.attach(Packs.address).setPriceInfo(1, "1500000000000000", MyToken.address)).wait(confirmnum)
+    await (await Packs.attach(Packs.address).setPriceInfo(2, "2500000000000000", MyToken.address)).wait(confirmnum)
+    await (await Packs.attach(Packs.address).setPriceInfo(3, "5000000000000000", MyToken.address)).wait(confirmnum)
+    await (await Packs.attach(Packs.address).setPriceInfo(4, "7500000000000000", MyToken.address)).wait(confirmnum)
 
     // set Uniswap Router
     // Put the Router V2 address of Uniswap / pancakeswap / etc ...

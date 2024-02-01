@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
+import "./Reentrancy.sol";
 
 interface IStorage {
     struct CardInfo {
@@ -31,7 +32,13 @@ interface IStorage {
     ) external view returns (BaseStat memory);
 }
 
-contract CARDNFT is ERC721, ERC721Enumerable, ERC721Burnable, AccessControl {
+contract CARDNFT is
+    ERC721,
+    ERC721Enumerable,
+    ERC721Burnable,
+    AccessControl,
+    Reentrancy
+{
     using Strings for uint256;
     using Strings for int;
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
@@ -41,12 +48,12 @@ contract CARDNFT is ERC721, ERC721Enumerable, ERC721Burnable, AccessControl {
     bool private useURI = false;
     IStorage public storageNFT;
 
-    constructor(address _store) ERC721("CARD", "NFTC") {
+    constructor(address _store) ERC721("BONKROYALE", "BONKROYALE") {
         _grantRole(DEFAULT_ADMIN_ROLE, address(msg.sender));
         _grantRole(MINTER_ROLE, address(msg.sender));
         storageNFT = IStorage(address(_store));
         useURI = true;
-        _uri = "https://bbb-api.vercel.app/api/nft/"; // change the uri here
+        _uri = "https://buypack-bonk.vercel.app/api/nft/"; // change the uri here
     }
 
     function toggleUseURI() external onlyRole(DEFAULT_ADMIN_ROLE) {
@@ -89,7 +96,7 @@ contract CARDNFT is ERC721, ERC721Enumerable, ERC721Burnable, AccessControl {
                     Base64.encode(
                         abi.encodePacked(
                             "{",
-                            '"name":"NFTC",',
+                            '"name":"BONKROYALE",',
                             '"image":"',
                             string(
                                 abi.encodePacked(
@@ -124,7 +131,7 @@ contract CARDNFT is ERC721, ERC721Enumerable, ERC721Burnable, AccessControl {
                             stat.armor.toString(),
                             "},",
                             "],",
-                            '"description": "Test description."',
+                            '"description": "BONKROYALE."',
                             "}"
                         )
                     )
@@ -134,10 +141,14 @@ contract CARDNFT is ERC721, ERC721Enumerable, ERC721Burnable, AccessControl {
 
     function safeMint(
         address to
-    ) public onlyRole(MINTER_ROLE) returns (uint256 _tokenid) {
+    ) public lock onlyRole(MINTER_ROLE) returns (uint256 _tokenid) {
         uint256 tokenId = _nextTokenId++;
         _safeMint(to, tokenId);
         _tokenid = tokenId;
+    }
+
+    function getCurrentTokenId() public view returns (uint256) {
+        return _nextTokenId;
     }
 
     function getAllTokenOfOwner(

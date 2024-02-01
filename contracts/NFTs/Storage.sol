@@ -2,8 +2,9 @@
 pragma solidity ^0.8.19;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
+import "./Reentrancy.sol";
 
-contract Storage is AccessControl {
+contract Storage is AccessControl, Reentrancy {
     bytes32 public constant MODERATOR = keccak256("MODERATOR_ROLE");
 
     // Class ID:
